@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type"
+	content="text/html"; charset=utf-8"/>
+	<title>КРЕСТИКИ-НОЛИКИ</title>
+	
+	<style>
+	.zeile div {
+	padding: 10px;
+	border: 2px solid green;
+	height: 50px;
+	width: 50px;
+	float: left;
+	}
+
+	.zeile {
+	clear: both;
+	}
+	</style>
+</head>
+
+<body>
+	Нажми сюда, чтобы начать игру КРЕСТИКИ-НОЛИКИ<br/>
+	<br>
+	<div>
+	<div class="zeile">
+	<div id="0_0" onclick="setze(this)"></div>
+	<div id="1_0" onclick="setze(this)"></div>
+	<div id="2_0" onclick="setze(this)"></div>
+	</div>
+
+	<div class="zeile">
+	<div id="0_1" onclick="setze(this)"></div>
+	<div id="1_1" onclick="setze(this)"></div>
+	<div id="2_1" onclick="setze(this)"></div>
+	</div>
+
+	<div class="zeile">
+	<div id="0_2" onclick="setze(this)"></div>
+	<div id="1_2" onclick="setze(this)"></div>
+	<div id="2_2" onclick="setze(this)"></div>
+	</div>
+	</div>
+
+	<script>
+	var aktuellerSpieler = "X";
+	
+	function setze(kästchen) {
+        	if(kästchen.innerText != "") return;
+		kästchen.innerText = aktuellerSpieler;
+		aktuellerSpieler == "O" ? aktuellerSpieler = "X" : aktuellerSpieler = "O";
+		prüfeSpielfeld();	
+	}
+        
+	function prüfeGewonnen(erstes, zweites, drittes) {
+		if(erstes != "" && erstes == zweites && zweites == drittes) {  
+            	alert( "Победа!"); }
+	  } 
+
+	function prüfeSpielfeld() {
+	for(var i = 0; i <= 2; i++) {
+	   prüfeGewonnen(document.getElementById("0_" + i).innerText,
+ 		document.getElementById("1_" + i).innerText,
+		document.getElementById("2_" + i).innerText);
+	 
+	   prüfeGewonnen(document.getElementById(i + "_0").innerText,
+		document.getElementById(i + "_1").innerText,
+		document.getElementById(i + "_2").innerText);
+		}
+	  
+	   prüfeGewonnen(document.getElementById("0_0").innerText,
+		document.getElementById("1_1").innerText,
+		document.getElementById("2_2").innerText);
+
+	   prüfeGewonnen(document.getElementById("0_2").innerText,
+		document.getElementById("1_1").innerText,
+		document.getElementById("2_0").innerText);			
+	}
+	
+	</script>
+</body>
+</html>
