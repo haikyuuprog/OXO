@@ -7,21 +7,41 @@
 	
 	<style>
 	.zeile div {
-	padding: 10px;
+	padding: 20px;
 	border: 2px solid green;
 	height: 50px;
 	width: 50px;
 	float: left;
+	display: flex;	
+	justify-content: center;
+ 	align-items: center;
+	font-size: 32px;
 	}
 
 	.zeile {
 	clear: both;
 	}
+	.zeile1 div {
+	padding: 10px;
+	border: 1px solid black;
+	height: 50px;
+	width: 260px;
+	float: left;
+	display: flex;	
+	justify-content: left;
+ 	align-items: center;
+	font-size: 24px;
+	}
+
+	.zeile1 {
+	clear: both;
+	}
+	
 	</style>
 </head>
 
 <body>
-	Нажми сюда, чтобы начать игру КРЕСТИКИ-НОЛИКИ<br/>
+	КРЕСТИКИ-НОЛИКИ<br/>
 	<br>
 	<div>
 	<div class="zeile">
@@ -41,41 +61,55 @@
 	<div id="1_2" onclick="setze(this)"></div>
 	<div id="2_2" onclick="setze(this)"></div>
 	</div>
+	<div class="zeile1"><div id="3_3"">Начинает X!</div></div>
 	</div>
 
 	<script>
 	var aktuellerSpieler = "X";
-	
+	var gewonnen = false;
+	var zugnummer = 1;	
+
 	function setze(kästchen) {
-        	if(kästchen.innerText != "") return;
+        	if(kästchen.innerText != "" || gewonnen==true) return; //в случае победы дальше не заходит
+		zugnummer+=1;
+		
 		kästchen.innerText = aktuellerSpieler;
 		aktuellerSpieler == "O" ? aktuellerSpieler = "X" : aktuellerSpieler = "O";
-		prüfeSpielfeld();	
-	}
+		prüfeSpielfeld();
+
+		if (gewonnen == false) {document.getElementById("3_3").innerText ="Теперь ходит " + aktuellerSpieler + " (ход " + zugnummer + ").";}
+		
+		if (gewonnen == false && zugnummer==10) 
+			{document.getElementById("3_3").style.color = "darkblue";
+			document.getElementById("3_3").innerText ="Ничья... Еще раз?";}
+		}
         
 	function prüfeGewonnen(erstes, zweites, drittes) {
-		if(erstes != "" && erstes == zweites && zweites == drittes) {  
-            	alert( "Победа!"); }
+		if(erstes.innerText != "" && erstes.innerText == zweites.innerText && zweites.innerText == drittes.innerText) {  
+		document.getElementById("3_3").style.color = "darkblue";
+            	document.getElementById("3_3").innerText = "--== Победил " + erstes.innerText + "! ==--";
+		erstes.style.color = "red"; zweites.style.color = "red"; drittes.style.color = "red";
+		gewonnen = true}
 	  } 
 
 	function prüfeSpielfeld() {
 	for(var i = 0; i <= 2; i++) {
-	   prüfeGewonnen(document.getElementById("0_" + i).innerText,
- 		document.getElementById("1_" + i).innerText,
-		document.getElementById("2_" + i).innerText);
+	   prüfeGewonnen(document.getElementById("0_" + i),
+ 		document.getElementById("1_" + i),
+		document.getElementById("2_" + i));
 	 
-	   prüfeGewonnen(document.getElementById(i + "_0").innerText,
-		document.getElementById(i + "_1").innerText,
-		document.getElementById(i + "_2").innerText);
+	   prüfeGewonnen(document.getElementById(i + "_0"),
+		document.getElementById(i + "_1"),
+		document.getElementById(i + "_2"));
 		}
 	  
-	   prüfeGewonnen(document.getElementById("0_0").innerText,
-		document.getElementById("1_1").innerText,
-		document.getElementById("2_2").innerText);
+	   prüfeGewonnen(document.getElementById("0_0"),
+		document.getElementById("1_1"),
+		document.getElementById("2_2"));
 
-	   prüfeGewonnen(document.getElementById("0_2").innerText,
-		document.getElementById("1_1").innerText,
-		document.getElementById("2_0").innerText);			
+	   prüfeGewonnen(document.getElementById("0_2"),
+		document.getElementById("1_1"),
+		document.getElementById("2_0"));			
 	}
 	
 	</script>
